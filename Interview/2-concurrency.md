@@ -140,6 +140,56 @@ mu.Unlock()
 
 * RWMutex improves performance when many reads but fewer writes are expected.
 
+
+```
+// Online Go compiler to run Golang program online
+// Print "Try programiz.pro" message
+
+package main
+import (
+    "fmt"
+    "sync"
+)
+
+type Counter struct{
+    data int
+    mu sync.Mutex
+}
+
+func worker(counter *Counter, wg *sync.WaitGroup) {
+    defer wg.Done()
+    counter.mu.Lock()
+    defer counter.mu.Unlock()
+    counter.data += 1
+}
+
+
+func main() {
+    var wg sync.WaitGroup
+    workerCount := 5
+    
+    counter := Counter{}
+    
+    for i :=0; i < workerCount; i++ {
+        wg.Add(1)
+        go worker(&counter, &wg)
+    }
+    
+    wg.Wait()
+    fmt.Println("Completed => ", counter.data)
+}
+
+import "testing"
+
+func TestAdd(t *testing.T) {
+    result := Add(2, 3)
+    if result != 5 {
+        t.Errorf("expected 5, got %d", result)
+    }
+}
+
+```
+
 ---
 
 Let me know if you’d like example code or mock questions around these!
